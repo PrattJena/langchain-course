@@ -3,30 +3,28 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
-from tavily import TavilyClient
+from langchain_tavily import TavilySearch
 
 load_dotenv()
 
-tavily = TavilyClient()
 
+# @tool
+# def search(query: str) -> str:
+#     """
+#     Tool that searches for information on the web.
 
-@tool
-def search(query: str) -> str:
-    """
-    Tool that searches for information on the web.
+#     Args:
+#         query: Clean keyword search terms. DO NOT use search operators like 'site:'.
 
-    Args:
-        query: Clean keyword search terms. DO NOT use search operators like 'site:'.
-
-    Returns:
-        Search results
-    """
-    print(f"Searching for: {query}")
-    return tavily.search(query=query)
+#     Returns:
+#         Search results
+#     """
+#     print(f"Searching for: {query}")
+#     return tavily.search(query=query)
 
 
 llm = ChatGoogleGenerativeAI(model="gemini-3.5-flash")
-tools = [search]
+tools = [TavilySearch()]
 agent = create_agent(model=llm, tools=tools)
 
 
